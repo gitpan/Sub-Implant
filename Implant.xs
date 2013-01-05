@@ -69,7 +69,11 @@ _subname(name, sub)
 		name = end;
 	}
 	gv = (GV *) newSV(0);
+#ifdef gv_init_pvn
         gv_init_pvn(gv, stash, name, s - name, utf8_flag | GV_ADDMULTI);
+#else
+        gv_init(gv, stash, name, s - name, TRUE);
+#endif
 	mg = SvMAGIC(cv);
 	while (mg && mg->mg_virtual != &subname_vtbl)
 		mg = mg->mg_moremagic;

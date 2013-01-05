@@ -3,3 +3,11 @@ Revision history for Sub-Implant
 0.01    2012-12-26
         Installed locally
 
+1.01    2013-01-03
+        Released to CPAN
+
+1.02    2013-01-05
+        Failing test reports for Perl < v5.14.3
+        In Implant.xs, call to gv_init_pvn() protected with #ifdef, revert
+        to gv_init() if Perl doesn't have gv_init_pvn
+

@@ -10,16 +10,14 @@ Sub::Implant - Make a named sub out of a subref
 
 =head1 VERSION
 
-Version 1.01
+Version 1.02
 
-# remainder of POD after __END__
-=cut
+=cut (remainder of POD after __END__)
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 # We use a modified derivate of Sub::Name, meant to replace Sub::Name
 # some day.  If/when that happens we can drop the XS part here
-
 use base 'DynaLoader';
 bootstrap Sub::Implant $VERSION;
 
@@ -143,7 +141,7 @@ __END__
 The function C<implant> is exported by default.  It can be imported under
 a different name by specifying
 
-    use Sub::Implant implant, {as => 'other_name'};
+    use Sub::Implant implant => {as => 'other_name'};
 
 =head1 SUBROUTINES
 
