@@ -2,9 +2,7 @@ NAME
     Sub::Implant - Make a named sub out of a subref
 
 VERSION
-    Version 1.01
-
-    # remainder of POD after __END__
+    Version 1.02
 
 SYNOPSIS
         use Sub::Implant;
@@ -23,7 +21,7 @@ EXPORT
     The function "implant" is exported by default. It can be imported under
     a different name by specifying
 
-        use Sub::Implant implant, {as => 'other_name'};
+        use Sub::Implant implant => {as => 'other_name'};
 
 SUBROUTINES
     "Sub::Implant" puts the mechanics of inserting a subref in a symbol

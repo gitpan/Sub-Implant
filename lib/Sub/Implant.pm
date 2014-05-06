@@ -10,11 +10,11 @@ Sub::Implant - Make a named sub out of a subref
 
 =head1 VERSION
 
-Version 1.02
+Version 2.00
 
 =cut (remainder of POD after __END__)
 
-our $VERSION = '1.02';
+our $VERSION = '2.00';
 
 # We use a modified derivate of Sub::Name, meant to replace Sub::Name
 # some day.  If/when that happens we can drop the XS part here
@@ -34,6 +34,7 @@ sub _import_into {
     unshift @arg, qw(implant) unless @arg; # default export
     my %export = (
         implant => \ &implant,
+        infuse  => \ &infuse,
     );
 
     while ( @arg ) {
@@ -44,6 +45,14 @@ sub _import_into {
         my %opt  = %{ shift @arg } if ref $arg[0] eq 'HASH';
         my $name = $opt{as} // $export;
         implant($client, $name, $code);
+    }
+}
+
+sub infuse {
+    my ($package, $what, %opt) = @_;
+    for my $name ( keys %$what ) {
+        my $code = $what->{$name};
+        implant($package, $name, $code, %opt)
     }
 }
 
@@ -149,6 +158,8 @@ C<Sub::Implant> puts the mechanics of inserting a subref in a symbol table
 and the action of assigning its internal name together under the convenient
 interface of C<implant(...)>.  See also L</ACKNOWLEDGEMENTS> below.
 
+C<infuse(...)> does the same, but for many functions at once.
+
 =over
 
 =item C<implant $qualified_name, $subref, %opt>
@@ -162,6 +173,13 @@ qualified), it will be qualified with the name of the calling package.
 Makes the subroutine $subref available under the name C<"${package}::$name">.
 In this form $name can't also be qualified, it is a fatal error if it
 contains C<'::'>
+
+=item C<infuse $package, {$name => $subref, ...}, %opt>
+
+Calls C<implant $package, $name, $subref, %opt> for all
+name/subref pairs in the hashref. Accordingly the subrefs are per
+default installed into $package, but a full qualified $name overrides
+that.
 
 =back
 
@@ -197,6 +215,7 @@ export itself to client modules. Here is how:
         unshift @arg, qw(implant) unless @arg; # default export
         my %export = (                         # provided exports
             implant => \ &implant,
+            infuse  => \ &infuse,
         );
 
         while ( @arg ) {
@@ -211,9 +230,6 @@ export itself to client modules. Here is how:
             implant($client, $name, $code);
         }
     }
-
-While C<Sub::Implant> only exports a single subroutine, you can see that it
-can easily be amended to export more by putting more in the C<%export> hash.
 
 =head1 AUTHOR
 
@@ -234,7 +250,6 @@ on your bug as I make changes.
 You can find documentation for this module with the perldoc command.
 
     perldoc Sub::Implant
-
 
 You can also look for information at:
 

@@ -1,7 +1,8 @@
-#!perl -T
+#!perl
 
 my $n_tests = 0;
 use Test::More;
+
 
 {
     package T1;
@@ -23,6 +24,9 @@ use Test::More;
         like($msg, $expect, $name);
     }
 
+    BEGIN {
+        print "$_\n" for @INC;
+    }
     use Sub::Implant;
 
     sub lala { (caller 0)[3] }
@@ -86,6 +90,23 @@ use Test::More;
         qr/^$/,
         'redefine warning suppressed'
     );
+}
+
+{
+    $n_tests += 2;
+    package T2;
+    use Test::More;
+    use Sub::Implant qw(infuse);
+
+    my %exports = (
+        hick => sub { 'hick' },
+        hack => sub { 'hack' },
+    );
+
+    infuse 'T2::One', \ %exports;
+
+    ok defined(&T2::One::hick), "infuse implants 'hick'";
+    ok defined(&T2::One::hack), "infuse implants 'hack'";
 }
 
 done_testing $n_tests;

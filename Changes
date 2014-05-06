@@ -10,4 +10,8 @@ Revision history for Sub-Implant
         Failing test reports for Perl < v5.14.3
         In Implant.xs, call to gv_init_pvn() protected with #ifdef, revert
         to gv_init() if Perl doesn't have gv_init_pvn
+        Released to CPAN
 
+2.01	2014-05-06
+	Adding infuse() besides implant(), with a nicer interface
+	for multi-implants in the same package with the same options
