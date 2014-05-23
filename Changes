@@ -15,3 +15,8 @@ Revision history for Sub-Implant
 2.01	2014-05-06
 	Adding infuse() besides implant(), with a nicer interface
 	for multi-implants in the same package with the same options
+
+2.02    2014-05-23
+        Depending on Sub::Identify and (the original) Sub::Name now,
+        instead of my own .xs implementation. Smooth transition, better.
+	Released to CPAN

@@ -10,16 +10,11 @@ Sub::Implant - Make a named sub out of a subref
 
 =head1 VERSION
 
-Version 2.00
+Version 2.02
 
 =cut (remainder of POD after __END__)
 
-our $VERSION = '2.00';
-
-# We use a modified derivate of Sub::Name, meant to replace Sub::Name
-# some day.  If/when that happens we can drop the XS part here
-use base 'DynaLoader';
-bootstrap Sub::Implant $VERSION;
+our $VERSION = '2.02';
 
 use Carp;
 
@@ -104,12 +99,24 @@ sub _do_define {
     *$name = $sub;
 }
 
-sub _do_name {
+sub _do_name_off {
     my ($name, $sub, %opt) = @_;
     my $old_name = _get_subname($sub);
     return if $old_name;
     _check_match($name, $sub, $old_name) unless $opt{lie}; # option 'lie' unused
     _subname($name, $sub);
+    return;
+}
+
+use Sub::Identify qw(sub_name);
+use Sub::Name qw(subname);
+
+sub _do_name {
+    my ($name, $sub, %opt) = @_;
+    my $old_name = sub_name($sub);
+    return if $old_name ne '__ANON__';
+    _check_match($name, $sub, $old_name) unless $opt{lie}; # option 'lie' unused
+    subname($name, $sub);
     return;
 }
 

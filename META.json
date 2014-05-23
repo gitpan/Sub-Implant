@@ -35,10 +35,12 @@
             "Carp" : "0",
             "DynaLoader" : "0",
             "Scalar::Util" : "0",
+            "Sub::Identify" : "0",
+            "Sub::Name" : "0",
             "Test::More" : "0"
          }
       }
    },
    "release_status" : "stable",
-   "version" : "2.00"
+   "version" : "2.02"
 }
